@@ -1,0 +1,10 @@
+/node_modules
+/dist
+/tests
+/testing
+/docs
+/web
+
+package-lock.json
+*.log
+*~

@@ -1,0 +1,55 @@
+{
+    "compilerOptions":
+    {
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": false,
+        "outDir": "dist",
+        "lib": 
+        [
+            "es2015", 
+            "dom"
+        ],
+        "types": 
+        [
+            "node",
+            "numeral",
+            "scrollmagic",
+            "jasmine",
+            "highlight.js"
+        ],
+        "typeRoots": 
+        [
+            "node_modules/@types",
+            "node_modules/@anglr/types"
+        ],
+        "plugins": 
+        [
+            {
+                "name": "@angular/language-service"
+            }
+        ]
+    },
+    "exclude":
+    [
+        "node_modules",
+        "dist",
+        "testing"
+    ],
+    "angularCompilerOptions": 
+    {
+        "skipMetadataEmit": false,
+        "strictMetadataEmit": true,
+        "fullTemplateTypeCheck": false,
+        "preserveWhitespaces": false
+    }
+}
