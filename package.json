@@ -18,8 +18,8 @@
         "deploy:next": "npp -p -b -s \"beta\" -t \"next\"",
         "deploy:stable:local": "npp -b --registry http://local:4873",
         "deploy:next:local": "npp -p -b -s \"beta\" -t \"next\" --registry http://local:4873",
-        "docs": "compodoc src -d docs -n '@anglr/grid' -p tsconfig.json --disablePrivate --disableInternal --disableLifeCycleHooks",
-        "postdocs": "copyfiles -u 1 docs/**/*.* \\\\DOCS-SERVER\\docs\\ng-grid && npm run clean",
+        "docs": "compodoc src -d docs -n '@anglr/md-help' -p tsconfig.json --disablePrivate --disableInternal --disableLifeCycleHooks",
+        "postdocs": "copyfiles -u 1 docs/**/*.* \\\\DOCS-SERVER\\docs\\ng-md-help && npm run clean",
         "pretest": "webpack",
         "test": "karma start karma.conf.js"
     },
