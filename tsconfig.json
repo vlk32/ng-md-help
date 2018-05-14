@@ -16,15 +16,12 @@
         "outDir": "dist",
         "lib": 
         [
-            "es2015", 
+            "es2016", 
             "dom"
         ],
         "types": 
         [
             "node",
-            "numeral",
-            "scrollmagic",
-            "jasmine",
             "highlight.js"
         ],
         "typeRoots": 
@@ -47,9 +44,7 @@
     ],
     "angularCompilerOptions": 
     {
-        "skipMetadataEmit": false,
-        "strictMetadataEmit": true,
-        "fullTemplateTypeCheck": false,
+        "fullTemplateTypeCheck": true,
         "preserveWhitespaces": false
     }
 }

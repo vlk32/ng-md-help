@@ -4,7 +4,7 @@ import {ActivatedRoute, Router, UrlSegment} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {GlobalNotificationsService} from "@anglr/notifications";
 import {catchError} from 'rxjs/operators';
-import {empty} from 'rxjs/observable/empty';
+import {empty} from 'rxjs';
 import * as marked from 'marked';
 import * as highlightjs from 'highlight.js';
 
@@ -170,7 +170,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
                     }
                 }
 
-                return empty<string>();
+                return empty();
             }))
             .subscribe(content =>
             { 
