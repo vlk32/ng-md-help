@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 5.0.1
+ - added protected `_filterHtml` method to `BaseHelpComponent` for filtering markdown html result
+
 ## Version 5.0.0
  - `@anglr/md-help` is now marked as *sideEffects* free
  - stabilized for angular v6

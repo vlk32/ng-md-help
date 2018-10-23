@@ -41,9 +41,9 @@ export abstract class BaseHelpComponent implements AfterViewInit
                 @Inject(PLATFORM_ID) protected _platformId: Object)
     {
     }
-    
+
     //######################### public methods - implementation of AfterViewInit #########################
-    
+
     /**
      * Called when view was initialized
      */
@@ -104,7 +104,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
         renderer.heading = (text: string, level: number, _raw: string) =>
         {
             var escapedText = text.toLowerCase().replace(/[\s]+/g, '-');
-  
+
             return `<h${level} id="${escapedText}">${text}</h${level}>`;
         };
 
@@ -130,7 +130,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
             return `<a href="${href}">${text}</a>`;
         };
 
-        renderer.code = function(code: string, language: string) 
+        renderer.code = function(code: string, language: string)
         {
             return `<pre><code class="${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
         };
@@ -148,7 +148,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
         this._helpSvc.get(parsedUrl)
             .pipe(catchError((err: HttpErrorResponse) =>
             {
-                if (err.error instanceof Error) 
+                if (err.error instanceof Error)
                 {
                     if(this._notifications)
                     {
@@ -172,16 +172,16 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
                 return empty();
             }))
-            .subscribe(content =>
-            { 
-                this.content.nativeElement.innerHTML = marked.parse(content, {renderer: renderer});
+            .subscribe(async content =>
+            {
+                this.content.nativeElement.innerHTML = await this._filterHtml(marked.parse(content, {renderer: renderer}));
 
                 this._scrollIntoView();
             });
     }
 
     /**
-     * Gets href url for url to different .md with fragment 
+     * Gets href url for url to different .md with fragment
      * @param {string} href Href for anchor
      */
     protected abstract _getRouteUrl(href: string);
@@ -192,6 +192,15 @@ export abstract class BaseHelpComponent implements AfterViewInit
     protected abstract _showNotFound();
 
     /**
+     * Filters out parts of html that should not be rendered
+     * @param html Html to be filtered
+     */
+    protected _filterHtml(html: string): Promise<string>
+    {
+        return Promise.resolve(html);
+    }
+
+    /**
      * Scrolls into view fragment element
      */
     protected _scrollIntoView()
@@ -199,7 +208,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
         if(this._isBrowser && this._route.snapshot.fragment)
         {
             let element = this._document.getElementById(this._route.snapshot.fragment);
-            
+
             if(element)
             {
                 element.scrollIntoView({behavior: "smooth"});
