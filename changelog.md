@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 5.0.2
+- added protected `_filterMd` method to `BaseHelpComponent` for filtering markdown input
+
 ## Version 5.0.1
  - added protected `_filterHtml` method to `BaseHelpComponent` for filtering markdown html result
 

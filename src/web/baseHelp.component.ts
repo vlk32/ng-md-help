@@ -174,7 +174,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
             }))
             .subscribe(async content =>
             {
-                this.content.nativeElement.innerHTML = await this._filterHtml(marked.parse(content, {renderer: renderer}));
+                this.content.nativeElement.innerHTML = await this._filterHtml(marked.parse(await this._filterMd(content), {renderer: renderer}));
 
                 this._scrollIntoView();
             });
@@ -190,6 +190,15 @@ export abstract class BaseHelpComponent implements AfterViewInit
      * Redirects to not found page
      */
     protected abstract _showNotFound();
+
+    /**
+     * Filters out parts of markdown that should not be processed
+     * @param md Markdown to be filtered
+     */
+    protected _filterMd(md: string): Promise<string>
+    {
+        return Promise.resolve(md);
+    }
 
     /**
      * Filters out parts of html that should not be rendered
