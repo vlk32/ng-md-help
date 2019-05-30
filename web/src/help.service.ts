@@ -7,7 +7,7 @@ export abstract class HelpService
 {
     /**
      * Gets helpfile from path
-     * @param {string} _path Path to help file
+     * @param _path Path to help file
      */
     public get(_path: string): Observable<string>
     {

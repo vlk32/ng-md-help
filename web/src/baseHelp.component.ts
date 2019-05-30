@@ -29,7 +29,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
     /**
      * Div that is used for displaying content
      */
-    @ViewChild('content')
+    @ViewChild('content', {static: false})
     public content: ElementRef;
 
     //######################### constructor #########################
@@ -62,7 +62,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
     /**
      * Process click for anchors
-     * @param {HTMLAnchorElement} target Target that was clicked
+     * @param target Target that was clicked
      */
     @HostListener('click', ['$event.target'])
     public processClick(target: HTMLAnchorElement)
@@ -182,7 +182,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
     /**
      * Gets href url for url to different .md with fragment
-     * @param {string} href Href for anchor
+     * @param href Href for anchor
      */
     protected abstract _getRouteUrl(href: string);
 
