@@ -24,6 +24,11 @@ export abstract class BaseHelpComponent implements AfterViewInit
      */
     protected _isBrowser: boolean = isPlatformBrowser(this._platformId);
 
+    /**
+     * Base url for md
+     */
+    protected _baseUrl: string = "rozne/help";
+
     //######################### public properties - children #########################
 
     /**
@@ -112,7 +117,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
         {
             if(href.indexOf('http') < 0 && href.indexOf('#') < 0)
             {
-                href = `rozne/help${href.replace('.md', '')}`;
+                href = `${this._baseUrl}${href.replace('.md', '')}`;
             }
 
             if(href.indexOf('#') >= 0)

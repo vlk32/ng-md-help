@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 6.0.1
+
+- added protected `_baseUrl` property to `BaseHelpComponent` for href resolving in md files
+
 ## Version 6.0.0
 
 - Angular IVY ready (APF compliant package)
