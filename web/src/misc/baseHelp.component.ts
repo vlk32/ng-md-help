@@ -8,7 +8,7 @@ import {empty} from 'rxjs';
 import * as marked from 'marked';
 import * as highlightjs from 'highlight.js';
 
-import {HelpService} from "./help.service";
+import {HelpService} from "../services/help.service";
 
 //TODO - solve loading anchor based on URL when first displayed #blabla
 
@@ -56,7 +56,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
     {
         this._route.url.subscribe(url =>
         {
-            if(this._renderContent)
+            if(this.content)
             {
                 this._renderContent(url);
             }
