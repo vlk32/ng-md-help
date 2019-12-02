@@ -1,9 +1,11 @@
-import {Directive, Input, Optional, ElementRef, OnChanges, SimpleChanges} from "@angular/core";
+import {Directive, Input, Optional, ElementRef, OnChanges, SimpleChanges, PLATFORM_ID, Inject, HostListener} from "@angular/core";
+import {isPlatformBrowser, DOCUMENT} from "@angular/common";
 import {Router, ActivatedRoute} from "@angular/router";
+import {GlobalNotificationsService} from "@anglr/notifications";
 import {nameof} from "@jscrpt/common";
 
 import {HelpService} from "../../services/help.service";
-import {renderMarkdown} from "../../misc/utils";
+import {renderMarkdown, handleHelpServiceError, handleRouterLink} from "../../misc/utils";
 
 /**
  * Directive that renders markdown inside
@@ -14,6 +16,13 @@ import {renderMarkdown} from "../../misc/utils";
 })
 export class RenderMarkdownDirective implements OnChanges
 {
+    //######################### private fields #########################
+
+    /**
+     * Indication whether is code running in browser
+     */
+    private _isBrowser: boolean = isPlatformBrowser(this._platformId);
+
     //######################### public properties - inputs #########################
 
     /**
@@ -40,13 +49,27 @@ export class RenderMarkdownDirective implements OnChanges
     @Input()
     public assetsPathPrefix: string = 'dist/md';
 
+    //######################### public methods - host #########################
+
+    /**
+     * Process click for anchors
+     * @param target Target that was clicked
+     */
+    @HostListener('click', ['$event'])
+    public processClick(target: MouseEvent)
+    {
+        return handleRouterLink(target, this._router);
+    }
+
     //######################### constructor #########################
     constructor(@Optional() private _helpSvc: HelpService,
                 private _element: ElementRef<HTMLElement>,
                 private _router: Router,
-                private _route: ActivatedRoute)
+                private _route: ActivatedRoute,
+                @Optional() protected _notifications: GlobalNotificationsService,
+                @Inject(DOCUMENT) protected _document: HTMLDocument,
+                @Inject(PLATFORM_ID) private _platformId: Object)
     {
-        console.log(this._helpSvc);
     }
 
     //######################### public methods - implementation of OnChanges #########################
@@ -65,27 +88,16 @@ export class RenderMarkdownDirective implements OnChanges
         //uses source for obtaning markdown
         if(nameof<RenderMarkdownDirective>('source') in changes && this.source && !this.renderMarkdown)
         {
-
+            this._loadMarkdown();
         }
     }
 
-    //######################### private methods #########################
-
-    /**
-     * Renders markdown
-     * @param markdown Markdown to be rendered
-     */
-    private async _renderMarkdown(markdown: string)
-    {
-        this._element.nativeElement.innerHTML = await this._filterHtml(renderMarkdown(await this._filterMd(markdown), this._router, this._route, this.baseUrl, this.assetsPathPrefix));
-    }
-
-    //######################### protected methods #########################
+    //######################### public methods #########################
 
     /**
      * Redirects to not found page
      */
-    protected _showNotFound(): void
+    public showNotFound(): void
     {
     }
 
@@ -93,7 +105,7 @@ export class RenderMarkdownDirective implements OnChanges
      * Filters out parts of markdown that should not be processed
      * @param md Markdown to be filtered
      */
-    protected _filterMd(md: string): Promise<string>
+    public filterMd(md: string): Promise<string>
     {
         return Promise.resolve(md);
     }
@@ -102,8 +114,52 @@ export class RenderMarkdownDirective implements OnChanges
      * Filters out parts of html that should not be rendered
      * @param html Html to be filtered
      */
-    protected _filterHtml(html: string): Promise<string>
+    public filterHtml(html: string): Promise<string>
     {
         return Promise.resolve(html);
+    }
+
+    //######################### private methods #########################
+
+    /**
+     * Loads markdown using source
+     */
+    private _loadMarkdown()
+    {
+        if(!this.source || !this._helpSvc)
+        {
+            return;
+        }
+
+        this._helpSvc.get(this.source)
+            .pipe(handleHelpServiceError(this.showNotFound.bind(this), this._notifications))
+            .subscribe(content => this._renderMarkdown(content));
+    }
+
+    /**
+     * Renders markdown
+     * @param markdown Markdown to be rendered
+     */
+    private async _renderMarkdown(markdown: string)
+    {
+        this._element.nativeElement.innerHTML = await this.filterHtml(renderMarkdown(await this.filterMd(markdown), this._router, this._route, this.baseUrl, this.assetsPathPrefix));
+
+        this._scrollIntoView();
+    }
+
+    /**
+     * Scrolls into view fragment element
+     */
+    private _scrollIntoView()
+    {
+        if(this._isBrowser && this._route.snapshot.fragment)
+        {
+            let element = this._document.getElementById(this._route.snapshot.fragment);
+
+            if(element)
+            {
+                element.scrollIntoView({behavior: "smooth"});
+            }
+        }
     }
 }
