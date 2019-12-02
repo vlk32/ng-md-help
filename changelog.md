@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 6.0.2
+
+- added new directive `RenderMarkdownDirective` that can be used for rendering markdown
+
 ## Version 6.0.1
 
 - added protected `_baseUrl` property to `BaseHelpComponent` for href resolving in md files
