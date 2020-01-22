@@ -1,4 +1,4 @@
-import {AfterViewInit, ElementRef, ViewChild, HostListener, Inject, PLATFORM_ID, Optional} from "@angular/core";
+import {AfterViewInit, ElementRef, ViewChild, HostListener, Inject, PLATFORM_ID, Optional, Directive} from "@angular/core";
 import {isPlatformBrowser, DOCUMENT} from "@angular/common";
 import {ActivatedRoute, Router, UrlSegment} from "@angular/router";
 import {GlobalNotificationsService} from "@anglr/notifications";
