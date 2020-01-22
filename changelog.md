@@ -2,6 +2,8 @@
 
 ## Version 6.0.2
 
+- added new component `MdMenuComponent` allowing to create *markdown* menu, used together with `RenderMarkdownDirective`
+- added new directive `MdMenuItemDirective` allowing to tag html element as navigation element in *markdown* pages
 - added new directive `RenderMarkdownDirective` that can be used for rendering markdown
 
 ## Version 6.0.1
