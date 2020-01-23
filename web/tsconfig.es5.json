@@ -1,11 +1,11 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "./tsconfig.json",
     "compilerOptions": 
     {
         "inlineSourceMap": true,
         "inlineSources": true,
         "rootDir": "..",
-        "outDir": "../dist/es5"
+        "outDir": "./dist/es5"
     },
     "files":
     [
@@ -23,7 +23,7 @@
         "annotateForClosureCompiler": true,
         "strictMetadataEmit": false,
         "skipTemplateCodegen": true,
-        "flatModuleOutFile": "web.js",
+        "flatModuleOutFile": "index.js",
         "flatModuleId": "@anglr/md-help/web"
     }
 }

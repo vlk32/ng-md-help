@@ -4,8 +4,9 @@
 /tests
 /web/**/*.d.ts
 /web/**/*.json
-/web/*.d.ts
-/web/*.metadata.json
+/*/dist
+/*.d.ts
+/*.metadata.json
 
 package-lock.json
 *.log

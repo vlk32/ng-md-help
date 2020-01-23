@@ -8,7 +8,7 @@
         "build": "npm run build:node && npm run build:web",
         "build:node": "copyfiles -u 1 src/index.js dist",
         "build:web": "ngc -p web/tsconfig.es5.json && ngc -p web/tsconfig.es2015.json",
-        "clean": "rimraf dist tests docs web/**/*.d.ts */*.d.ts */*.metadata.json ./*.metadata.json ./*.d.ts",
+        "clean": "rimraf dist tests docs web/**/*.d.ts */*.d.ts */*.metadata.json ./*.metadata.json ./*.d.ts */dist",
         "clean:deps": "rimraf package-lock.json node_modules",
         "clean:all": "npm run clean && npm run clean:deps",
         "ngc": "ngc",

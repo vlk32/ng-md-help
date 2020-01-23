@@ -1,8 +1,8 @@
 {
     "name": "@anglr/md-help/web",
-    "module": "../dist/es5/web/web.js",
-    "esm2015": "../dist/es2015/web/web.js",
-    "esm5": "../dist/es5/web/web.js",
-    "typings": "./web.d.ts",
+    "module": "../dist/es5/web/index.js",
+    "esm2015": "../dist/es2015/web/index.js",
+    "esm5": "../dist/es5/web/index.js",
+    "typings": "./index.d.ts",
     "sideEffects": false
 }
