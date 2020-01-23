@@ -1,6 +1,5 @@
 import {Component, ChangeDetectionStrategy, QueryList, ContentChildren, AfterContentInit, OnDestroy, OnInit, ChangeDetectorRef, Input} from "@angular/core";
-import {Location} from '@angular/common';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 
 import {MdMenuItemDirective} from "../../directives/mdMenuItem/mdMenuItem.directive";
@@ -60,7 +59,7 @@ export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
 
     //######################### constructor #########################
     constructor(private _route: ActivatedRoute,
-                private _location: Location,
+                private _router: Router,
                 private _changeDetector: ChangeDetectorRef)
     {
     }
@@ -96,11 +95,7 @@ export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
         {
             this._itemsClickSubscriptions.push(item.click.subscribe(() =>
             {
-                this.activePath = item.mdPath;
-                this._changeDetector.markForCheck();
-
-                this._setActiveItem();
-                this._location.go(`${this.baseUrl}/${this.activePath}`);
+                this._router.navigate([`${this.baseUrl}/${item.mdPath}`]);
             }));
         });
 
