@@ -55,7 +55,7 @@ export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
      * Array of menu items
      * @internal
      */
-    @ContentChildren(MdMenuItemDirective)
+    @ContentChildren(MdMenuItemDirective, {descendants: true})
     public items: QueryList<MdMenuItemDirective>;
 
     //######################### constructor #########################
