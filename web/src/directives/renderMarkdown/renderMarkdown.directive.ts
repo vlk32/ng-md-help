@@ -16,12 +16,12 @@ import {renderMarkdown, handleHelpServiceError, handleRouterLink} from "../../mi
 })
 export class RenderMarkdownDirective implements OnChanges
 {
-    //######################### private fields #########################
+    //######################### protected fields #########################
 
     /**
      * Indication whether is code running in browser
      */
-    private _isBrowser: boolean = isPlatformBrowser(this._platformId);
+    protected _isBrowser: boolean = isPlatformBrowser(this._platformId);
 
     //######################### public properties - inputs #########################
 
@@ -53,7 +53,7 @@ export class RenderMarkdownDirective implements OnChanges
 
     /**
      * Process click for anchors
-     * @param target Target that was clicked
+     * @param target - Target that was clicked
      */
     @HostListener('click', ['$event'])
     public processClick(target: MouseEvent)
@@ -62,13 +62,13 @@ export class RenderMarkdownDirective implements OnChanges
     }
 
     //######################### constructor #########################
-    constructor(@Optional() private _helpSvc: HelpService,
-                private _element: ElementRef<HTMLElement>,
-                private _router: Router,
-                private _route: ActivatedRoute,
+    constructor(@Optional() protected _helpSvc: HelpService,
+                protected _element: ElementRef<HTMLElement>,
+                protected _router: Router,
+                protected _route: ActivatedRoute,
                 @Optional() protected _notifications: GlobalNotificationsService,
                 @Inject(DOCUMENT) protected _document: HTMLDocument,
-                @Inject(PLATFORM_ID) private _platformId: Object)
+                @Inject(PLATFORM_ID) protected _platformId: Object)
     {
     }
 
@@ -103,7 +103,7 @@ export class RenderMarkdownDirective implements OnChanges
 
     /**
      * Filters out parts of markdown that should not be processed
-     * @param md Markdown to be filtered
+     * @param md - Markdown to be filtered
      */
     public filterMd(md: string): Promise<string>
     {
@@ -112,19 +112,19 @@ export class RenderMarkdownDirective implements OnChanges
 
     /**
      * Filters out parts of html that should not be rendered
-     * @param html Html to be filtered
+     * @param html - Html to be filtered
      */
     public filterHtml(html: string): Promise<string>
     {
         return Promise.resolve(html);
     }
 
-    //######################### private methods #########################
+    //######################### protected methods #########################
 
     /**
      * Loads markdown using source
      */
-    private _loadMarkdown()
+    protected _loadMarkdown()
     {
         if(!this.source || !this._helpSvc)
         {
@@ -138,9 +138,9 @@ export class RenderMarkdownDirective implements OnChanges
 
     /**
      * Renders markdown
-     * @param markdown Markdown to be rendered
+     * @param markdown - Markdown to be rendered
      */
-    private async _renderMarkdown(markdown: string)
+    protected async _renderMarkdown(markdown: string)
     {
         this._element.nativeElement.innerHTML = await this.filterHtml(renderMarkdown(await this.filterMd(markdown), this._router, this._route, this.baseUrl, this.assetsPathPrefix));
 
@@ -150,7 +150,7 @@ export class RenderMarkdownDirective implements OnChanges
     /**
      * Scrolls into view fragment element
      */
-    private _scrollIntoView()
+    protected _scrollIntoView()
     {
         if(this._isBrowser && this._route.snapshot.fragment)
         {

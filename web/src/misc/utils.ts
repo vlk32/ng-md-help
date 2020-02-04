@@ -8,11 +8,11 @@ import {GlobalNotificationsService} from '@anglr/notifications';
 
 /**
  * Renders markdown to html
- * @param markdown Markdown that will be rendered to html
- * @param router Angular router used for generating links
- * @param route Current route used during generation of relative links
- * @param baseUrl Base url used for routing links
- * @param assetsPathPrefix Path for static assets
+ * @param markdown - Markdown that will be rendered to html
+ * @param router - Angular router used for generating links
+ * @param route - Current route used during generation of relative links
+ * @param baseUrl - Base url used for routing links
+ * @param assetsPathPrefix - Path for static assets
  */
 export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, baseUrl: string, assetsPathPrefix: string = 'dist/md'): string
 {
@@ -68,8 +68,8 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
 /**
  * Handles click event
- * @param event Mouse event that occured
- * @param router Router that is used for changing url
+ * @param event - Mouse event that occured
+ * @param router - Router that is used for changing url
  */
 export function handleRouterLink(event: MouseEvent, router: Router)
 {
@@ -97,8 +97,8 @@ export function handleRouterLink(event: MouseEvent, router: Router)
 
 /**
  * Handles help service error
- * @param showNotFound Method used for displaying not found
- * @param notifications Service used for notifications
+ * @param showNotFound - Method used for displaying not found
+ * @param notifications - Service used for notifications
  */
 export function handleHelpServiceError(showNotFound: () => void, notifications: GlobalNotificationsService): MonoTypeOperatorFunction<string|null>
 {

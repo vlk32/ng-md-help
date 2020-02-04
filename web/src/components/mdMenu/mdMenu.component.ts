@@ -15,17 +15,17 @@ import {MdMenuItemDirective} from "../../directives/mdMenuItem/mdMenuItem.direct
 })
 export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
 {
-    //######################### private fields #########################
+    //######################### protected fields #########################
 
     /**
      * Array of items click subscriptions
      */
-    private _itemsClickSubscriptions: Subscription[] = [];
+    protected _itemsClickSubscriptions: Subscription[] = [];
 
     /**
      * Subscription for changing route
      */
-    private _routeChangeSubscription: Subscription;
+    protected _routeChangeSubscription: Subscription;
 
     //######################### public properties #########################
 
@@ -58,9 +58,9 @@ export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
     public items: QueryList<MdMenuItemDirective>;
 
     //######################### constructor #########################
-    constructor(private _route: ActivatedRoute,
-                private _router: Router,
-                private _changeDetector: ChangeDetectorRef)
+    constructor(protected _route: ActivatedRoute,
+                protected _router: Router,
+                protected _changeDetector: ChangeDetectorRef)
     {
     }
 
@@ -123,12 +123,12 @@ export class MdMenuComponent implements AfterContentInit, OnDestroy, OnInit
         }
     }
 
-    //######################### private methods #########################
+    //######################### protected methods #########################
 
     /**
      * Sets items as active
      */
-    private _setActiveItem()
+    protected _setActiveItem()
     {
         if(!this.items || !this.activePath ||!this.activeCssClass)
         {

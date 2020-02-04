@@ -5,7 +5,6 @@
         "baseUrl": ".",
         "paths": 
         {
-            "@anglr/grid": ["../src/grid"]
         }
     },
     "files":
@@ -14,6 +13,8 @@
     ],
     "angularCompilerOptions":
     {
-        "fullTemplateTypeCheck": true
+        "fullTemplateTypeCheck": true,
+        "strictTemplates": true,
+        "enableIvy": false
     }
 }

@@ -10,12 +10,12 @@ import {Subject, Observable} from "rxjs";
 })
 export class MdMenuItemDirective
 {
-    //######################### private fields #########################
+    //######################### protected fields #########################
 
     /**
      * Subject that is used for emitting click
      */
-    private _clickSubject: Subject<void> = new Subject<void>();
+    protected _clickSubject: Subject<void> = new Subject<void>();
 
     //######################### public properties - inputs #########################
 
@@ -36,7 +36,7 @@ export class MdMenuItemDirective
     }
 
     //######################### constructor #########################
-    constructor(private _element: ElementRef<HTMLElement>)
+    constructor(protected _element: ElementRef<HTMLElement>)
     {
     }
 
@@ -59,8 +59,8 @@ export class MdMenuItemDirective
 
     /**
      * Sets active css class
-     * @param cssClass Css class to be set
-     * @param active Indication whether set as active
+     * @param cssClass - Css class to be set
+     * @param active - Indication whether set as active
      */
     public setActive(cssClass: string, active: boolean = true)
     {

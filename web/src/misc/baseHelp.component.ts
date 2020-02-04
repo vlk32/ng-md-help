@@ -69,7 +69,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
     /**
      * Process click for anchors
-     * @param target Target that was clicked
+     * @param target - Target that was clicked
      */
     @HostListener('click', ['$event'])
     public processClick(target: MouseEvent)
@@ -108,7 +108,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
     /**
      * Filters out parts of markdown that should not be processed
-     * @param md Markdown to be filtered
+     * @param md - Markdown to be filtered
      */
     protected _filterMd(md: string): Promise<string>
     {
@@ -117,7 +117,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
 
     /**
      * Filters out parts of html that should not be rendered
-     * @param html Html to be filtered
+     * @param html - Html to be filtered
      */
     protected _filterHtml(html: string): Promise<string>
     {
