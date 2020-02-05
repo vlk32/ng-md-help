@@ -1,10 +1,10 @@
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, NavigationExtras} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
+import {GlobalNotificationsService} from '@anglr/notifications';
 import {MonoTypeOperatorFunction, Observable, empty} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import * as marked from 'marked';
 import * as highlightjs from 'highlight.js';
-import {GlobalNotificationsService} from '@anglr/notifications';
 
 /**
  * Renders markdown to html
@@ -28,20 +28,30 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
     renderer.link = (href: string, _title: string, text: string) =>
     {
-        if(href.indexOf('http') < 0 && href.indexOf('#') < 0)
+        //internal links containing .md are replaced
+        if(href.indexOf('http') !== 0)
         {
-            href = `${baseUrl}${href.replace('.md', '')}`;
-        }
+            href = href.replace(/\.md($|#)/gm, '$1');
+            href = href.replace(/^\.\//gm, '../');
 
-        if(href.indexOf('#') >= 0)
-        {
-            if(href.indexOf('.md') >= 0)
+            let routeParams: NavigationExtras = {};
+
+            //handle fragment
+            if(href.indexOf('#') >= 0)
             {
-                href = router.serializeUrl(router.createUrlTree([`/${baseUrl}${href.replace(/^(.*?)\.md.*?$/, "$1")}`], {fragment: href.replace(/^.*?#(.*?)$/, '$1')}));
+                routeParams.fragment = href.replace(/^.*?#/gm, '');
+            }
+
+            //handle relative links
+            if(href.startsWith('../'))
+            {
+                routeParams.relativeTo = route;
+
+                href = router.serializeUrl(router.createUrlTree([href.replace(/#.*?$/gm, '')], routeParams));
             }
             else
             {
-                href = router.serializeUrl(router.createUrlTree(['.'], {fragment: href.replace('#', ''), relativeTo: route}));
+                href = router.serializeUrl(router.createUrlTree([`/${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
             }
         }
 
@@ -55,7 +65,7 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
     renderer.image = (href: string, _title: string, text: string) =>
     {
-        if(href.indexOf('http') > -1 || href.indexOf("data:image") > -1)
+        if(href.indexOf('http') === 0 || href.indexOf("data:image") > -1)
         {
             return `<img src="${href}" alt="${text}">`;
         }
@@ -82,7 +92,7 @@ export function handleRouterLink(event: MouseEvent, router: Router)
     }
 
     //absolute url or contains fragment to same page
-    if(target.attributes['href'].value.indexOf('http') >= 0 || target.attributes['href'].value.indexOf(`${router.url}#`) >= 0)
+    if(target.attributes['href'].value.indexOf('http') === 0 || target.attributes['href'].value.indexOf(`${router.url}#`) >= 0)
     {
         return true;
     }
