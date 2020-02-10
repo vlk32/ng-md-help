@@ -36,7 +36,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
     /**
      * Div that is used for displaying content
      */
-    @ViewChild('content', {static: false})
+    @ViewChild('content')
     public content: ElementRef;
 
     //######################### constructor #########################

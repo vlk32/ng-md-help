@@ -2,7 +2,7 @@
 /dist
 /docs
 /tests
-/temp
+temp/
 /web/**/*.d.ts
 /web/**/*.json
 /*/dist

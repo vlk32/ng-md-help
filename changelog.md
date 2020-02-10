@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 7.0.0
+
+- updated to latest stable *Angular* 9
+- added generating of API doc
+
 ## Version 6.0.2
 
 - added new component `MdMenuComponent` allowing to create *markdown* menu, used together with `RenderMarkdownDirective`

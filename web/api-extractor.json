@@ -33,6 +33,14 @@
             {
                 "logLevel": "none"
             },
+            "ae-internal-missing-underscore":
+            {
+                "logLevel": "none"
+            },
+            "ae-missing-getter":
+            {
+                "logLevel": "none"
+            },
             "default":
             {
                 "logLevel": "warning"
