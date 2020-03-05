@@ -1,4 +1,4 @@
-import {Directive, Optional, ElementRef, Inject, PLATFORM_ID, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import {Directive, Optional, ElementRef, Inject, PLATFORM_ID} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
@@ -24,8 +24,6 @@ export class RenderMarkdownIncludeDirective extends RenderMarkdownDirective
                 @Optional() notifications: GlobalNotificationsService,
                 @Inject(DOCUMENT) document: HTMLDocument,
                 @Inject(PLATFORM_ID) platformId: Object,
-                protected _viewContainer: ViewContainerRef,
-                protected _componentFactoryResolver: ComponentFactoryResolver,
                 protected _http: HttpClient)
     {
         super(helpSvc, element, router, route, notifications, document, platformId);
