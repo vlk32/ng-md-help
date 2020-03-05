@@ -1,6 +1,7 @@
 import {Router, ActivatedRoute, NavigationExtras} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {GlobalNotificationsService} from '@anglr/notifications';
+import {isBlank} from '@jscrpt/common';
 import {MonoTypeOperatorFunction, Observable, empty} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import * as marked from 'marked';
@@ -86,7 +87,7 @@ export function handleRouterLink(event: MouseEvent, router: Router)
     let target = event.target as HTMLElement;
 
     //not anchor
-    if(target.nodeName != "A")
+    if(target.nodeName != "A" || isBlank(target.attributes['href']))
     {
         return true;
     }

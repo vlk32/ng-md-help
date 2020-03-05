@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 7.0.1
+
+- added `RenderMarkdownIncludeDirective` supporting import of another markdowns (one level)
+- fixed `handleRouterLink`, now checks *anchors* only with `href` attribute
+
 ## Version 7.0.0
 
 - updated to latest stable *Angular* 9
