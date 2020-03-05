@@ -24,7 +24,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
     /**
      * Base url for md
      */
-    protected _baseUrl: string = "rozne/help";
+    protected _baseUrl: string = "";
 
     /**
      * Path for static assets
@@ -74,7 +74,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
     @HostListener('click', ['$event'])
     public processClick(target: MouseEvent)
     {
-        return handleRouterLink(target, this._router);
+        return handleRouterLink(target, this._router, this._document);
     }
 
     //######################### protected methods #########################

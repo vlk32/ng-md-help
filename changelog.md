@@ -4,6 +4,12 @@
 
 - added `RenderMarkdownIncludeDirective` supporting import of another markdowns (one level)
 - fixed `handleRouterLink`, now checks *anchors* only with `href` attribute
+- `RenderMarkdownIncludeDirective` now handles *hash* routes in *markdown*
+- `BaseHelpComponent` has no default *baseUrl* now
+- `renderMarkdown` does not automatically prefix links with `/`
+- added `hljs` css class to `<code>` when rendering code
+- `handleRouterLink` now supports also redirecting to absolute URL with same *origin* and performs *scrollIntoView*
+- added `getCurrentUrlPrefix` which compoutes *origin*
 
 ## Version 7.0.0
 

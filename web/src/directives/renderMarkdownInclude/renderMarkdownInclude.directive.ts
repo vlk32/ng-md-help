@@ -43,6 +43,8 @@ export class RenderMarkdownIncludeDirective extends RenderMarkdownDirective
         {
             let includeMd = await this._http.get(matches[1], {responseType: 'text'}).toPromise();
 
+            includeMd = includeMd.replace(/\/#\//g, "/");
+
             md = md.replace(/@INCLUDEMD#(.*?)@/, includeMd);
         }
 

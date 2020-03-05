@@ -41,7 +41,7 @@ export class RenderMarkdownDirective implements OnChanges
      * Base url for md
      */
     @Input()
-    public baseUrl: string;
+    public baseUrl: string = "";
 
     /**
      * Path for static assets
@@ -58,7 +58,7 @@ export class RenderMarkdownDirective implements OnChanges
     @HostListener('click', ['$event'])
     public processClick(target: MouseEvent)
     {
-        return handleRouterLink(target, this._router);
+        return handleRouterLink(target, this._router, this._document);
     }
 
     //######################### constructor #########################

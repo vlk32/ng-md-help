@@ -15,7 +15,7 @@ import * as highlightjs from 'highlight.js';
  * @param baseUrl - Base url used for routing links
  * @param assetsPathPrefix - Path for static assets
  */
-export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, baseUrl: string, assetsPathPrefix: string = 'dist/md'): string
+export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, baseUrl: string = "", assetsPathPrefix: string = 'dist/md'): string
 {
     let renderer = new marked.Renderer();
 
@@ -52,7 +52,7 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
             }
             else
             {
-                href = router.serializeUrl(router.createUrlTree([`/${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
+                href = router.serializeUrl(router.createUrlTree([`${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
             }
         }
 
@@ -61,7 +61,7 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
     renderer.code = function(code: string, language: string)
     {
-        return `<pre><code class="${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
+        return `<pre><code class="hljs ${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
     };
 
     renderer.image = (href: string, _title: string, text: string) =>
@@ -82,28 +82,50 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
  * @param event - Mouse event that occured
  * @param router - Router that is used for changing url
  */
-export function handleRouterLink(event: MouseEvent, router: Router)
+export function handleRouterLink(event: MouseEvent, router: Router, document: HTMLDocument)
 {
     let target = event.target as HTMLElement;
 
     //not anchor
-    if(target.nodeName != "A" || isBlank(target.attributes['href']))
+    if(target.nodeName != "A" || isBlank(target.attributes['href']?.value))
     {
         return true;
     }
 
-    //absolute url or contains fragment to same page
-    if(target.attributes['href'].value.indexOf('http') === 0 || target.attributes['href'].value.indexOf(`${router.url}#`) >= 0)
+    let href: string = target.attributes['href'].value;
+    let currentUrl = getCurrentUrlPrefix(document);
+    href = href.replace(new RegExp(`^${currentUrl}`), "");
+
+    //absolute url to different page
+    if(href.indexOf('http') === 0)
     {
         return true;
     }
 
-    router.navigateByUrl(target.attributes['href'].value);
+    let parsedUrl = router.parseUrl(href);
+
+    router.navigateByUrl(parsedUrl).then(() =>
+    {
+        //scroll into view
+        if(parsedUrl.fragment)
+        {
+            document.querySelector(`#${parsedUrl.fragment}`)?.scrollIntoView({behavior: "smooth"});
+        }
+    });
 
     event.preventDefault();
     event.stopPropagation();
 
     return false;
+}
+
+/**
+ * Gets current URL prefix (contains protocol and host)
+ * @param document - Html document to be used for computation of current URL prefix
+ */
+export function getCurrentUrlPrefix(document: HTMLDocument): string
+{
+    return `${document.location.protocol}//${document.location.host}`;
 }
 
 /**
