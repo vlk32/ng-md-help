@@ -50,6 +50,13 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
                 href = router.serializeUrl(router.createUrlTree([href.replace(/#.*?$/gm, '')], routeParams));
             }
+            //handle fragment links
+            else if(href.startsWith("#"))
+            {
+                routeParams.relativeTo = route;
+
+                href = router.serializeUrl(router.createUrlTree(['.'], routeParams));
+            }
             else
             {
                 href = router.serializeUrl(router.createUrlTree([`${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
