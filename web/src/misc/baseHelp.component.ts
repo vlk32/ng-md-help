@@ -6,8 +6,6 @@ import {GlobalNotificationsService} from "@anglr/notifications";
 import {HelpService} from "../services/help.service";
 import {renderMarkdown, handleRouterLink, handleHelpServiceError} from "./utils";
 
-//TODO - solve loading anchor based on URL when first displayed #blabla
-
 /**
  * Base component for displaying help pages
  */
@@ -30,6 +28,11 @@ export abstract class BaseHelpComponent implements AfterViewInit
      * Path for static assets
      */
     protected _assetsPathPrefix: string = 'dist/md';
+    
+    /**
+     * Charmap used for normalization
+     */
+    protected _charMap: Object = {};
 
     //######################### public properties - children #########################
 
@@ -95,7 +98,7 @@ export abstract class BaseHelpComponent implements AfterViewInit
             .pipe(handleHelpServiceError(this._showNotFound.bind(this), this._notifications))
             .subscribe(async content =>
             {
-                this.content.nativeElement.innerHTML = await this._filterHtml(renderMarkdown(await this._filterMd(content), this._router, this._route, this._baseUrl, this._assetsPathPrefix));
+                this.content.nativeElement.innerHTML = await this._filterHtml(renderMarkdown(await this._filterMd(content), this._router, this._route, this._document, this._charMap, this._baseUrl, this._assetsPathPrefix));
 
                 this._scrollIntoView();
             });

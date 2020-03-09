@@ -9,7 +9,9 @@
 - `renderMarkdown` does not automatically prefix links with `/`
 - added `hljs` css class to `<code>` when rendering code
 - `handleRouterLink` now supports also redirecting to absolute URL with same *origin* and performs *scrollIntoView*
-- added `getCurrentUrlPrefix` which compoutes *origin*
+- added `getCurrentUrlPrefix` which computes *origin*
+- `renderMarkdown` now correctly normalize ids and anchor fragments
+- `@jscrpt/common@1.1.1` is required
 
 ## Version 7.0.0
 

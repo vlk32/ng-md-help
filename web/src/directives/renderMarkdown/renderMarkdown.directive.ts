@@ -44,6 +44,12 @@ export class RenderMarkdownDirective implements OnChanges
     public baseUrl: string = "";
 
     /**
+     * Charmap used for normalization
+     */
+    @Input()
+    public charMap: Object = {};
+
+    /**
      * Path for static assets
      */
     @Input()
@@ -142,7 +148,7 @@ export class RenderMarkdownDirective implements OnChanges
      */
     protected async _renderMarkdown(markdown: string)
     {
-        this._element.nativeElement.innerHTML = await this.filterHtml(renderMarkdown(await this.filterMd(markdown), this._router, this._route, this.baseUrl, this.assetsPathPrefix));
+        this._element.nativeElement.innerHTML = await this.filterHtml(renderMarkdown(await this.filterMd(markdown), this._router, this._route, this._document, this.charMap, this.baseUrl, this.assetsPathPrefix));
 
         this._scrollIntoView();
     }

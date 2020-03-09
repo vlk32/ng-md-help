@@ -1,7 +1,7 @@
 import {Router, ActivatedRoute, NavigationExtras} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {GlobalNotificationsService} from '@anglr/notifications';
-import {isBlank} from '@jscrpt/common';
+import {isBlank, validHtmlId} from '@jscrpt/common';
 import {MonoTypeOperatorFunction, Observable, empty} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import * as marked from 'marked';
@@ -12,23 +12,28 @@ import * as highlightjs from 'highlight.js';
  * @param markdown - Markdown that will be rendered to html
  * @param router - Angular router used for generating links
  * @param route - Current route used during generation of relative links
+ * @param document - HTML document instance
+ * @param charMap - Char map used for normalization of ids and anchor fragments
  * @param baseUrl - Base url used for routing links
  * @param assetsPathPrefix - Path for static assets
  */
-export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, baseUrl: string = "", assetsPathPrefix: string = 'dist/md'): string
+export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, document: HTMLDocument, charMap: Object = {}, baseUrl: string = "", assetsPathPrefix: string = 'dist/md'): string
 {
     let renderer = new marked.Renderer();
 
     // Override function
     renderer.heading = (text: string, level: number, _raw: string) =>
     {
-        var escapedText = text.toLowerCase().replace(/[\s]+/g, '-');
+        var escapedText = validHtmlId(text, charMap);
 
         return `<h${level} id="${escapedText}">${text}</h${level}>`;
     };
 
     renderer.link = (href: string, _title: string, text: string) =>
     {
+        let currentUrl = getCurrentUrlPrefix(document);
+        href = href.replace(new RegExp(`^${currentUrl}`), "");
+
         //internal links containing .md are replaced
         if(href.indexOf('http') !== 0)
         {
@@ -40,7 +45,7 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
             //handle fragment
             if(href.indexOf('#') >= 0)
             {
-                routeParams.fragment = href.replace(/^.*?#/gm, '');
+                routeParams.fragment = validHtmlId(href.replace(/^.*?#/gm, ''), charMap);
             }
 
             //handle relative links
@@ -88,6 +93,7 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
  * Handles click event
  * @param event - Mouse event that occured
  * @param router - Router that is used for changing url
+ * @param document - HTML document instance
  */
 export function handleRouterLink(event: MouseEvent, router: Router, document: HTMLDocument)
 {
