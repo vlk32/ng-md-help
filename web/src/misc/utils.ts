@@ -1,11 +1,11 @@
-import {Router, ActivatedRoute, NavigationExtras} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {GlobalNotificationsService} from '@anglr/notifications';
-import {isBlank, validHtmlId} from '@jscrpt/common';
-import {MonoTypeOperatorFunction, Observable, empty} from 'rxjs';
+import {isBlank} from '@jscrpt/common';
+import {MonoTypeOperatorFunction, Observable, EMPTY} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import * as marked from 'marked';
-import * as highlightjs from 'highlight.js';
+import marked from 'marked';
+import hljs from 'highlight.js';
 
 /**
  * Renders markdown to html
@@ -19,74 +19,90 @@ import * as highlightjs from 'highlight.js';
  */
 export function renderMarkdown(markdown: string, router: Router, route: ActivatedRoute, document: HTMLDocument, charMap: Object = {}, baseUrl: string = "", assetsPathPrefix: string = 'dist/md'): string
 {
-    let renderer = new marked.Renderer();
+
+    console.log(router, route, document, charMap, baseUrl, assetsPathPrefix);
 
     // Override function
-    renderer.heading = (text: string, level: number, _raw: string) =>
+    // renderer.heading = (text: string, level: number, _raw: string) =>
+    // {
+    //     var escapedText = validHtmlId(text, charMap);
+
+    //     return `<h${level} id="${escapedText}">${text}</h${level}>`;
+    // };
+
+    // renderer.link = (href: string, _title: string, text: string) =>
+    // {
+    //     let currentUrl = getCurrentUrlPrefix(document);
+    //     href = href.replace(new RegExp(`^${currentUrl}`), "");
+
+    //     //internal links containing .md are replaced
+    //     if(href.indexOf('http') !== 0)
+    //     {
+    //         href = href.replace(/\.md($|#)/gm, '$1');
+    //         href = href.replace(/^\.\//gm, '../');
+
+    //         let routeParams: NavigationExtras = {};
+
+    //         //handle fragment
+    //         if(href.indexOf('#') >= 0)
+    //         {
+    //             routeParams.fragment = validHtmlId(href.replace(/^.*?#/gm, ''), charMap);
+    //         }
+
+    //         //handle relative links
+    //         if(href.startsWith('../'))
+    //         {
+    //             routeParams.relativeTo = route;
+
+    //             href = router.serializeUrl(router.createUrlTree([href.replace(/#.*?$/gm, '')], routeParams));
+    //         }
+    //         //handle fragment links
+    //         else if(href.startsWith("#"))
+    //         {
+    //             routeParams.relativeTo = route;
+
+    //             href = router.serializeUrl(router.createUrlTree(['.'], routeParams));
+    //         }
+    //         else
+    //         {
+    //             href = router.serializeUrl(router.createUrlTree([`${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
+    //         }
+    //     }
+
+    //     return `<a href="${href}">${text}</a>`;
+    // };
+
+    // renderer.code = function(code: string, language: string)
+    // {
+    //     return `<pre><code class="hljs ${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
+    // };
+
+    // renderer.image = (href: string, _title: string, text: string) =>
+    // {
+    //     if(href.indexOf('http') === 0 || href.indexOf("data:image") > -1)
+    //     {
+    //         return `<img src="${href}" alt="${text}">`;
+    //     }
+
+    //     return `<img src="${assetsPathPrefix}${href}" alt="${text}">`;
+    // };
+
+    const renderer: marked.Renderer = <any><Partial<marked.Renderer>>
     {
-        var escapedText = validHtmlId(text, charMap);
-
-        return `<h${level} id="${escapedText}">${text}</h${level}>`;
-    };
-
-    renderer.link = (href: string, _title: string, text: string) =>
-    {
-        let currentUrl = getCurrentUrlPrefix(document);
-        href = href.replace(new RegExp(`^${currentUrl}`), "");
-
-        //internal links containing .md are replaced
-        if(href.indexOf('http') !== 0)
+        code: (code: string, infostring: string, _escaped: boolean): string =>
         {
-            href = href.replace(/\.md($|#)/gm, '$1');
-            href = href.replace(/^\.\//gm, '../');
+            const validLanguage = hljs.getLanguage(infostring) ? infostring : 'plaintext';
 
-            let routeParams: NavigationExtras = {};
-
-            //handle fragment
-            if(href.indexOf('#') >= 0)
-            {
-                routeParams.fragment = validHtmlId(href.replace(/^.*?#/gm, ''), charMap);
-            }
-
-            //handle relative links
-            if(href.startsWith('../'))
-            {
-                routeParams.relativeTo = route;
-
-                href = router.serializeUrl(router.createUrlTree([href.replace(/#.*?$/gm, '')], routeParams));
-            }
-            //handle fragment links
-            else if(href.startsWith("#"))
-            {
-                routeParams.relativeTo = route;
-
-                href = router.serializeUrl(router.createUrlTree(['.'], routeParams));
-            }
-            else
-            {
-                href = router.serializeUrl(router.createUrlTree([`${baseUrl}${href.replace(/#.*?$/gm, "")}`], routeParams));
-            }
+            return `<pre><code class="hljs language-${infostring}">${hljs.highlight(validLanguage, code).value}</code></pre>`;
         }
+    }
 
-        return `<a href="${href}">${text}</a>`;
-    };
-
-    renderer.code = function(code: string, language: string)
+    marked.use(
     {
-        return `<pre><code class="hljs ${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
-    };
+        renderer
+    });
 
-    renderer.image = (href: string, _title: string, text: string) =>
-    {
-        if(href.indexOf('http') === 0 || href.indexOf("data:image") > -1)
-        {
-            return `<img src="${href}" alt="${text}">`;
-        }
-
-        return `<img src="${assetsPathPrefix}${href}" alt="${text}">`;
-    };
-
-    return marked.parse(markdown, {renderer: renderer});
+    return marked(markdown);
 }
 
 /**
@@ -174,7 +190,7 @@ export function handleHelpServiceError(showNotFound: () => void, notifications: 
                 }
             }
 
-            return empty();
+            return EMPTY;
         }));
     };
 }

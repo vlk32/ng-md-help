@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 8.0.0 (2021-02-22)
+
+### BREAKING CHANGES
+
+- minimal supported version of *Angular* is `11.0.0`
+- minimal supported version of `@jscrpt/common` is `1.2.0`
+- minimal supported version of `marked` is `2.0.0`
+- minimal supported version of `highlight.js` is `10.6.0`
+
 ## Version 7.0.1
 
 - added `RenderMarkdownIncludeDirective` supporting import of another markdowns (one level)
