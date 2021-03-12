@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 8.0.1 (2021-03-12)
+- added optional supporr for mermaid
+
 ## Version 8.0.0 (2021-02-22)
 
 ### BREAKING CHANGES

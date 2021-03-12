@@ -91,9 +91,16 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
     {
         code: (code: string, infostring: string, _escaped: boolean): string =>
         {
-            const validLanguage = hljs.getLanguage(infostring) ? infostring : 'plaintext';
 
-            return `<pre><code class="hljs language-${infostring}">${hljs.highlight(validLanguage, code).value}</code></pre>`;
+            if(infostring == 'mermaid')
+            {
+                return '<pre class="mermaid">'+code+'</pre>';
+            }
+            else
+            {
+                const validLanguage = hljs.getLanguage(infostring) ? infostring : 'plaintext';
+                return `<pre><code class="hljs language-${infostring}">${hljs.highlight(validLanguage, code).value}</code></pre>`;
+            }
         }
     }
 
