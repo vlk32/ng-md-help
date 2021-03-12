@@ -73,7 +73,12 @@ export function renderMarkdown(markdown: string, router: Router, route: Activate
 
     renderer.code = function(code: string, language: string)
     {
-        return `<pre><code class="hljs ${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
+        if (language == 'mermaid')
+        {
+            return '<pre class="mermaid">'+code+'</pre>'
+        } else {
+            return `<pre><code class="hljs ${language}">${highlightjs.highlight(language, code).value}</code></pre>`;
+        }
     };
 
     renderer.image = (href: string, _title: string, text: string) =>
