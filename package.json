@@ -1,5 +1,5 @@
 {
-    "name": "@anglr/md-help",
+    "name": "@arborai/md-help",
     "version": "0.0.0-placeholder",
     "description": "Angular module containing basic implementation of markdown help interpreter",
     "main": "dist/index.js",
